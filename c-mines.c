@@ -30,6 +30,8 @@ int main(int argc, char ** argv) {
 
         char ** board = init_board(size, num);
 
+        print_board(board, size);
+
         destroy_board(board, size);
         return EXIT_SUCCESS;
         
@@ -47,6 +49,13 @@ void print_usage(void) {
     
 }
 
+/*
+ * Legend:
+ * #   = covered
+ * *   = mine
+ * .   = empty
+ * 1-8 = number of adjacent mines
+ */
 char ** init_board(int size, int num) {
 
     char ** board = malloc(size * sizeof(char *));
@@ -75,4 +84,14 @@ void destroy_board(char ** board, int size) {
 
     free(board);
 
+}
+
+void print_board(char ** board, int size) {
+    for(int r = 0; r < size; ++r) {
+        for(int c = 0; c < size; ++c) {
+            printf(" %c ", board[r][c]);
+        }
+
+        printf("\n");
+    }
 }
