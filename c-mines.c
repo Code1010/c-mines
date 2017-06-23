@@ -42,18 +42,18 @@ int main(int argc, char ** argv) {
 void print_usage(void) {
 
     fprintf(stderr, "Usage: mines len num\n");
-    fprintf(stderr, "  where len is the decimal length of one side of the board\n");
+    fprintf(stderr, "  where len is the integer length of one side of the board\n");
     fprintf(stderr, "  and   num is the number of mines on the board\n");
     
 }
 
 char ** init_board(int size, int num) {
 
-    char ** board = malloc(size);
+    char ** board = malloc(size * sizeof(char *));
 
     for(int i = 0; i < size; ++i) {
 
-        board[i] = calloc(1, size);
+        board[i] = malloc(size * sizeof(char *));
         for(int j = 0; j < size; ++j) {
 
             board[i][j] = '#';
