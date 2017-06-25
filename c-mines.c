@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "c-mines.h"
 
 int main(int argc, char ** argv) {
@@ -53,7 +54,7 @@ void print_usage(void) {
  * Legend:
  * #   = covered
  * *   = mine
- * .   = empty
+ * 0   = empty
  * 1-8 = number of adjacent mines
  */
 char ** init_board(int size, int num) {
@@ -65,11 +66,28 @@ char ** init_board(int size, int num) {
         board[i] = malloc(size * sizeof(char *));
         for(int j = 0; j < size; ++j) {
 
-            board[i][j] = '#';
+            board[i][j] = '0';
 
         }
 
     }
+
+    int count = 0;
+    int r, c;
+
+    srand(time(0));
+    while(count < num) {
+        r = rand() % size;
+        c = rand() % size;
+
+        if(board[r][c] != '*') {
+            count++;
+            board[r][c] = '*';
+        }
+    }
+
+
+    calculate_cells(board, size);
 
     return board;
 }
@@ -93,5 +111,31 @@ void print_board(char ** board, int size) {
         }
 
         printf("\n");
+    }
+}
+
+void calculate_cells(char ** board, int size) {
+
+    for(int r = 0; r < size; ++r) {
+        for(int c = 0; c < size; ++c) {
+
+            if(board[r][c] != '*') {
+                int total = 0;
+                for(int sr = r - 1; sr < r + 1; ++sr) {
+                    for(int sc = c - 1; sc < c + 1; ++sc) {
+
+                        // make sure they're safe to dereference
+                        if((sr && sc) && (sr < size) && (sc < size)) {
+                            if(board[sr][sc] == '*')
+                                total++;
+                        }
+                    }
+                }
+
+                board[r][c] = total; // TODO will that work?
+
+            }
+
+        }
     }
 }

@@ -12,4 +12,6 @@ char ** init_board(int size, int num);
 void destroy_board(char ** board, int size);
 
 void print_board(char ** board, int size);
+
+void calculate_cells(char ** board, int size);
 #endif
