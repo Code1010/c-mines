@@ -27,6 +27,7 @@ int main(int argc, char ** argv) {
         printf("================C-MINES================\n");
         printf("    == Board Size: %dx%d\n", size, size);
         printf("    == Number of mines: %d\n", num);
+        printf("    == Difficulty: %d\n", (10 * num) / (size * size));
         printf("=======================================\n");
 
         char ** board = init_board(size, num);
@@ -86,7 +87,6 @@ char ** init_board(int size, int num) {
         }
     }
 
-
     calculate_cells(board, size);
 
     return board;
@@ -121,18 +121,18 @@ void calculate_cells(char ** board, int size) {
 
             if(board[r][c] != '*') {
                 int total = 0;
-                for(int sr = r - 1; sr < r + 1; ++sr) {
-                    for(int sc = c - 1; sc < c + 1; ++sc) {
+                for(int sr = r - 1; sr <= r + 1; ++sr) {
+                    for(int sc = c - 1; sc <= c + 1; ++sc) {
 
                         // make sure they're safe to dereference
-                        if((sr && sc) && (sr < size) && (sc < size)) {
+                        if((sr >= 0 && sc >= 0) && (sr < size) && (sc < size)) {
                             if(board[sr][sc] == '*')
                                 total++;
                         }
                     }
                 }
 
-                board[r][c] = total; // TODO will that work?
+                board[r][c] = total + '0'; // TODO will that work?
 
             }
 
