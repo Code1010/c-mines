@@ -30,11 +30,13 @@ int main(int argc, char ** argv) {
         printf("    == Difficulty: %d\n", (10 * num) / (size * size));
         printf("=======================================\n");
 
-        char ** board = create_board(size);
+        char ** board = create_board(size, '0');
         init_board(board, size, num);
 
-        print_board(board, size);
+        char ** view = create_board(size, '#');
+        
 
+        destroy_board(view, size);
         destroy_board(board, size);
         return EXIT_SUCCESS;
         
@@ -53,7 +55,7 @@ void print_usage(void) {
 }
 
 // just allocates a board of specified size!
-char ** create_board(int size) {
+char ** create_board(int size, char fill) {
 
     char ** board = malloc(size * sizeof(char *));
 
@@ -62,7 +64,7 @@ char ** create_board(int size) {
         board[i] = malloc(size * sizeof(char *));
         for(int j = 0; j < size; ++j) {
 
-            board[i][j] = '0';
+            board[i][j] = fill;
 
         }
 
