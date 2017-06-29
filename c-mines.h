@@ -7,7 +7,9 @@
 
 void print_usage(void);
 
-char ** init_board(int size, int num);
+void init_board(char ** board, int size, int num);
+
+char ** create_board(int size);
 
 void destroy_board(char ** board, int size);
 

@@ -30,7 +30,8 @@ int main(int argc, char ** argv) {
         printf("    == Difficulty: %d\n", (10 * num) / (size * size));
         printf("=======================================\n");
 
-        char ** board = init_board(size, num);
+        char ** board = create_board(size);
+        init_board(board, size, num);
 
         print_board(board, size);
 
@@ -51,14 +52,8 @@ void print_usage(void) {
     
 }
 
-/*
- * Legend:
- * #   = covered
- * *   = mine
- * 0   = empty
- * 1-8 = number of adjacent mines
- */
-char ** init_board(int size, int num) {
+// just allocates a board of specified size!
+char ** create_board(int size) {
 
     char ** board = malloc(size * sizeof(char *));
 
@@ -72,6 +67,20 @@ char ** init_board(int size, int num) {
         }
 
     }
+
+    return board;
+
+}
+
+/*
+ * Legend:
+ * #   = covered
+ * *   = mine
+ * 0   = empty
+ * 1-8 = number of adjacent mines
+ */
+void init_board(char ** board, int size, int num) {
+
 
     int count = 0;
     int r, c;
@@ -89,7 +98,6 @@ char ** init_board(int size, int num) {
 
     calculate_cells(board, size);
 
-    return board;
 }
 
 void destroy_board(char ** board, int size) {
