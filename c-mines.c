@@ -34,7 +34,6 @@ int main(int argc, char ** argv) {
         init_board(board, size, num);
 
         char ** view = create_board(size, '#');
-        
 
         destroy_board(view, size);
         destroy_board(board, size);
