@@ -17,4 +17,7 @@ void print_board(char ** board, int size);
 
 void calculate_cells(char ** board, int size);
 
+int play_game(char ** board, char ** view, int size, int num);
+
+void show_board(char ** view, int size, int cursr, int cursc);
 #endif

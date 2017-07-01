@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <ncurses.h>
+#include <stdbool.h>
 #include "c-mines.h"
 
 int main(int argc, char ** argv) {
@@ -23,17 +25,19 @@ int main(int argc, char ** argv) {
         } else if(num >= (size * size)) {
             num = (size * size);
         }
-
+/*
         printf("================C-MINES================\n");
         printf("    == Board Size: %dx%d\n", size, size);
         printf("    == Number of mines: %d\n", num);
         printf("    == Difficulty: %d\n", (10 * num) / (size * size));
         printf("=======================================\n");
-
+*/
         char ** board = create_board(size, '0');
         init_board(board, size, num);
 
         char ** view = create_board(size, '#');
+
+        play_game(board, view, size, num);
 
         destroy_board(view, size);
         destroy_board(board, size);
@@ -141,10 +145,88 @@ void calculate_cells(char ** board, int size) {
                     }
                 }
 
-                board[r][c] = total + '0'; // TODO will that work?
+                board[r][c] = total + '0';
 
             }
 
         }
     }
+}
+
+/*
+ * Controls: 
+ * Move cursor: wasd
+ * Mark: e
+ * Uncover cell: r
+ * Quit: q
+ */
+int play_game(char ** board, char ** view, int size, int num) {
+    
+    time_t start = time(NULL);
+    initscr();
+    raw();
+    noecho();
+    curs_set(0);
+
+    // meat goes here
+    int mines_marked = 0;
+    int r = 0, c = 0;
+    bool safe = true;
+    int ch;
+    
+    while(safe) {
+        
+        show_board(view, size, r, c);
+
+        ch = getch();
+        if(ch == 'q') {
+            // i give up
+            safe = false;
+        } else if(ch == 'w') {
+            r--;
+        } else if(ch == 's') {
+            r++;
+        } else if(ch == 'a') {
+            c--;
+        } else if(ch == 'd') {
+            c++; // lol
+        }
+
+        if(r < 0)
+            r = size - 1;
+
+        if(c < 0)
+            c = size - 1;
+
+        r = r % size;
+        c = c % size;
+
+    }
+
+    refresh();
+    getch();
+    endwin();
+    time_t end = time(NULL);
+    return end - start;
+
+}
+
+void show_board(char ** view, int size, int cursr, int cursc) {
+    
+    move(0, 0);
+
+    for(int r = 0; r < size; ++r) {
+        for(int c = 0; c < size; ++c) {
+            if(cursr == r && cursc == c) {
+                printw("[%c]", view[r][c]);
+            } else {
+                printw(" %c ", view[r][c]);
+            }
+        }
+
+        printw("\n");
+    }
+
+    refresh();
+
 }
