@@ -190,6 +190,30 @@ int play_game(char ** board, char ** view, int size, int num) {
             c--;
         } else if(ch == 'd') {
             c++; // lol
+        } else if(ch == 'e') {
+            // mark the space
+            if(view[r][c] == '!') {
+                view[r][c] = '#';
+            } else if(view[r][c] == '#') {
+                view[r][c] = '!';
+            }
+        } else if(ch == 'r') {
+            // detonate
+            switch(uncover(board[r][c])) {
+                case 0:
+                    view[r][c] = board[r][c];
+                    break;
+
+                case 1:
+                    view[r][c] = '*';
+
+                    break;
+
+                case -1:
+                    view[r][c] = board[r][c];
+                    break;
+            }
+            
         }
 
         if(r < 0)
@@ -228,5 +252,22 @@ void show_board(char ** view, int size, int cursr, int cursc) {
     }
 
     refresh();
+
+}
+
+/*
+ * Returns -1 if empty space (clearing required)
+ * Returns  0 if safe, no clearing required
+ * Returns  1 if bomb...you lose
+ */
+int uncover(char board) {
+
+    if(board == '*') {
+        return 1;
+    } else if(board == '0') {
+        return -1;
+    } else { 
+        return 0;
+    }
 
 }
