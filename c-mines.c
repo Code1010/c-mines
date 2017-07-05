@@ -171,17 +171,19 @@ int play_game(char ** board, char ** view, int size, int num) {
     // meat goes here
     int mines_marked = 0;
     int r = 0, c = 0;
-    bool safe = true;
+    bool run = true;
+    bool dead = false;
     int ch;
     
-    while(safe) {
+    while(run) {
         
         show_board(view, size, r, c);
 
         ch = getch();
         if(ch == 'q') {
             // i give up
-            safe = false;
+            run = false;
+            dead = true;
         } else if(ch == 'w') {
             r--;
         } else if(ch == 's') {
@@ -194,8 +196,16 @@ int play_game(char ** board, char ** view, int size, int num) {
             // mark the space
             if(view[r][c] == '!') {
                 view[r][c] = '#';
+                
+                if(board[r][c] == '*'){
+                    mines_marked--;
+                } 
             } else if(view[r][c] == '#') {
                 view[r][c] = '!';
+
+                if(board[r][c] == '*') {
+                    mines_marked++;
+                }
             }
         } else if(ch == 'r') {
             // detonate
@@ -206,6 +216,9 @@ int play_game(char ** board, char ** view, int size, int num) {
 
                 case 1:
                     view[r][c] = '*';
+                    // you lose!
+                    run = false;
+                    dead = true;
 
                     break;
 
@@ -225,13 +238,30 @@ int play_game(char ** board, char ** view, int size, int num) {
         r = r % size;
         c = c % size;
 
+        if(mines_marked == num) {
+            // win!
+            run = false;
+            dead = false;
+        } 
+
     }
 
-    refresh();
-    getch();
-    endwin();
     time_t end = time(NULL);
-    return end - start;
+    refresh();
+    endwin();
+
+    // game over...did you win?
+    if(dead) {
+        printf("You died in a glorious ball of fire after only"
+                " %ld seconds.\n", (long) end - (long) start);
+        print_summary();
+    } else {
+        printf("Nice work! You found all of the mines in %ld seconds. \n",
+                (long) end - (long) start);
+        print_summary();
+    }
+
+    return (long) end - (long) start;
 
 }
 
@@ -270,4 +300,9 @@ int uncover(char board) {
         return 0;
     }
 
+}
+
+void print_summary(void) {
+    // TODO made this print something meaningful
+    printf("summary\n");
 }

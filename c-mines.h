@@ -22,4 +22,6 @@ int play_game(char ** board, char ** view, int size, int num);
 void show_board(char ** view, int size, int cursr, int cursc);
 
 int uncover(char board);
+
+void print_summary(void);
 #endif
