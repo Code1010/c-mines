@@ -219,11 +219,11 @@ int play_game(char ** board, char ** view, int size, int num) {
                     // you lose!
                     run = false;
                     dead = true;
-
                     break;
 
                 case -1:
-                    view[r][c] = board[r][c];
+                    view[r][c] = '.';
+                    clear_area(r, c, view, board);
                     break;
             }
             
@@ -252,13 +252,13 @@ int play_game(char ** board, char ** view, int size, int num) {
 
     // game over...did you win?
     if(dead) {
-        printf("You died in a glorious ball of fire after only"
-                " %ld seconds.\n", (long) end - (long) start);
-        print_summary();
+        printf("\n\nYou died in a glorious ball of fire after only"
+                " %ld seconds.\n\n", (long) end - (long) start);
+        print_summary(num, mines_marked, size);
     } else {
-        printf("Nice work! You found all of the mines in %ld seconds. \n",
+        printf("\n\nNice work! You found all of the mines in %ld seconds. \n\n",
                 (long) end - (long) start);
-        print_summary();
+        print_summary(num, mines_marked, size);
     }
 
     return (long) end - (long) start;
@@ -302,7 +302,15 @@ int uncover(char board) {
 
 }
 
-void print_summary(void) {
-    // TODO made this print something meaningful
-    printf("summary\n");
+void print_summary(int num, int right, int size) {
+    printf("\n=================== Mines Summary ===================\n");
+    printf("Board Size: %dx%d\n", size, size);
+    printf("Number of mines: %d\n", num);
+    printf("Difficulty: %d\n", (10 * num) / (size * size));
+    printf("Number of mines correctly marked: %d\n", right);
+    printf("=====================================================\n");
+}
+
+void clear_area(int r, int c, char ** view, char ** board) {
+    
 }

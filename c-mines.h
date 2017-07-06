@@ -23,5 +23,7 @@ void show_board(char ** view, int size, int cursr, int cursc);
 
 int uncover(char board);
 
-void print_summary(void);
+void print_summary(int num, int right, int size);
+
+void clear_area(int r, int c, char ** view, char ** board);
 #endif
