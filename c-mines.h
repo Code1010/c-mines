@@ -5,6 +5,15 @@
 #ifndef CMINES
 #define CMINES
 
+typedef struct cells {
+    int r, c;
+    struct cells * next;
+} Cell;
+
+bool add_cell(Cell * head, int r, int c);
+
+void destroy_cells(Cell * node);
+
 void print_usage(void);
 
 void init_board(char ** board, int size, int num);
@@ -25,5 +34,5 @@ int uncover(char board);
 
 void print_summary(int num, int right, int size);
 
-void clear_area(int r, int c, char ** view, char ** board);
+void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size);
 #endif

@@ -223,7 +223,9 @@ int play_game(char ** board, char ** view, int size, int num) {
 
                 case -1:
                     view[r][c] = '.';
-                    clear_area(r, c, view, board);
+                    Cell * head = NULL;
+                    clear_area(r, c, view, board, head, size);
+                    destroy_cells(head);
                     break;
             }
             
@@ -248,6 +250,7 @@ int play_game(char ** board, char ** view, int size, int num) {
 
     time_t end = time(NULL);
     refresh();
+    curs_set(1);
     endwin();
 
     // game over...did you win?
@@ -311,6 +314,61 @@ void print_summary(int num, int right, int size) {
     printf("=====================================================\n");
 }
 
-void clear_area(int r, int c, char ** view, char ** board) {
+// warning: big honkin' recursive function ahead
+void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size) {
+
+    for(int sr = r - 1; sr <= r + 1; ++sr) {
+        for(int sc = c - 1; sc <= c + 1; ++sc) {
+
+            // make sure they're safe to dereference
+            if((sr >= 0 && sc >= 0) && (sr < size) && (sc < size)) {
+                if(board[sr][sc] > '0') {
+                    view[sr][sc] = board[sr][sc];
+                } else {
+                    if(add_cell(head, sr, sc)) {
+                        clear_area(sr, sc, view, board, head, size);
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+bool add_cell(Cell * head, int r, int c) {
     
+    if(head == NULL) {
+        head = malloc(sizeof(Cell));
+        head->r = r;
+        head->c = c;
+        head->next = NULL;
+    }
+
+    Cell * temp = head;
+
+    while(temp->next) {
+
+        if(temp->r == r && temp->c == c) {
+            return false;
+        } else {
+            temp = temp->next;
+        }
+
+    }
+
+    temp->next = malloc(sizeof(Cell));
+    temp->next->r = r;
+    temp->next->c = c;
+    temp->next->next = NULL;
+
+    return true;
+
+}
+
+void destroy_cells(Cell * node) {
+    if(node->next) {
+        destroy_cells(node->next);
+    } else {
+        free(node);
+    }
 }
