@@ -64,7 +64,7 @@ char ** create_board(int size, char fill) {
 
     for(int i = 0; i < size; ++i) {
 
-        board[i] = malloc(size * sizeof(char *));
+        board[i] = malloc(size * sizeof(char));
         for(int j = 0; j < size; ++j) {
 
             board[i][j] = fill;
@@ -224,8 +224,9 @@ int play_game(char ** board, char ** view, int size, int num) {
                 case -1:
                     view[r][c] = '.';
                     Cell * head = NULL;
-                    clear_area(r, c, view, board, head, size);
-                    destroy_cells(head);
+                    Cell ** handle = &head;
+                    add_cell(*handle, r, c);
+                    destroy_cells(*handle);
                     break;
             }
             
@@ -337,38 +338,31 @@ void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size
 
 bool add_cell(Cell * head, int r, int c) {
     
-    if(head == NULL) {
-        head = malloc(sizeof(Cell));
-        head->r = r;
-        head->c = c;
-        head->next = NULL;
-    }
+    if(head) {
 
-    Cell * temp = head;
-
-    while(temp->next) {
-
-        if(temp->r == r && temp->c == c) {
+        if(head->r == r && head->c == c) {
             return false;
         } else {
-            temp = temp->next;
+            return add_cell(head->next, r, c);
         }
 
+    } else {
+        head = malloc(sizeof(Cell));
+        head->next = NULL;
+        head->r = r;
+        head->c = c;
+
+        return true;
     }
-
-    temp->next = malloc(sizeof(Cell));
-    temp->next->r = r;
-    temp->next->c = c;
-    temp->next->next = NULL;
-
-    return true;
 
 }
 
 void destroy_cells(Cell * node) {
-    if(node->next) {
-        destroy_cells(node->next);
-    } else {
-        free(node);
+    if(node) {
+        if(node->next) {
+            destroy_cells(node->next);
+        } else {
+            free(node);
+        }
     }
 }
