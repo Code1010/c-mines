@@ -10,9 +10,9 @@ typedef struct cells {
     struct cells * next;
 } Cell;
 
-bool add_cell(Cell * head, int r, int c);
+bool add_cell(Cell ** handle, int r, int c);
 
-void destroy_cells(Cell * node);
+void destroy_cells(Cell ** handle);
 
 void print_usage(void);
 
@@ -34,5 +34,5 @@ int uncover(char board);
 
 void print_summary(int num, int right, int size);
 
-void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size);
+void clear_area(int r, int c, char ** view, char ** board, Cell ** head, int size);
 #endif

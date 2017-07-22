@@ -225,8 +225,8 @@ int play_game(char ** board, char ** view, int size, int num) {
                     view[r][c] = '.';
                     Cell * head = NULL;
                     Cell ** handle = &head;
-                    add_cell(*handle, r, c);
-                    destroy_cells(*handle);
+                    add_cell(handle, r, c);
+                    destroy_cells(handle);
                     break;
             }
             
@@ -316,7 +316,7 @@ void print_summary(int num, int right, int size) {
 }
 
 // warning: big honkin' recursive function ahead
-void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size) {
+void clear_area(int r, int c, char ** view, char ** board, Cell ** head, int size) {
 
     for(int sr = r - 1; sr <= r + 1; ++sr) {
         for(int sc = c - 1; sc <= c + 1; ++sc) {
@@ -336,8 +336,10 @@ void clear_area(int r, int c, char ** view, char ** board, Cell * head, int size
 
 }
 
-bool add_cell(Cell * head, int r, int c) {
+bool add_cell(Cell ** handle, int r, int c) {
     
+    Cell * head = *handle;
+
     if(head) {
 
         if(head->r == r && head->c == c) {
@@ -357,7 +359,10 @@ bool add_cell(Cell * head, int r, int c) {
 
 }
 
-void destroy_cells(Cell * node) {
+void destroy_cells(Cell ** handle) {
+
+    Cell * node = *handle;
+
     if(node) {
         if(node->next) {
             destroy_cells(node->next);
