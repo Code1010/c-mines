@@ -340,34 +340,36 @@ bool add_cell(Cell ** handle, int r, int c) {
     
     Cell * head = *handle;
 
-    if(head) {
-
+    while(head) {
+        
         if(head->r == r && head->c == c) {
             return false;
-        } else {
-            return add_cell(head->next, r, c);
-        }
+        }        
 
-    } else {
-        head = malloc(sizeof(Cell));
-        head->next = NULL;
-        head->r = r;
-        head->c = c;
+        head = head->next;
 
-        return true;
     }
+
+    // if we get here, the cell wasn't found
+    head = malloc(sizeof(Cell));
+    head->next = NULL;
+    head->r = r;
+    head->c = c;
+
+    return true;
 
 }
 
 void destroy_cells(Cell ** handle) {
 
-    Cell * node = *handle;
+    Cell * node;
 
-    if(node) {
-        if(node->next) {
-            destroy_cells(node->next);
-        } else {
-            free(node);
-        }
+    while(*handle) {
+
+        node = *handle;
+        handle = &node->next;
+        free(node);
+    
     }
+
 }
