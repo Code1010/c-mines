@@ -362,14 +362,12 @@ bool add_cell(Cell ** handle, int r, int c) {
 
 void destroy_cells(Cell ** handle) {
 
-    Cell * node;
+    Cell * node = *handle;
 
-    while(*handle) {
-
-        node = *handle;
-        handle = &(node->next);
+    while(node) {
+        *handle = node->next;
         free(node);
-    
+        node = *handle;
     }
 
 }
