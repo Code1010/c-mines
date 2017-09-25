@@ -327,6 +327,7 @@ void clear_area(int r, int c, char ** view, char ** board, Cell ** head, int siz
                 if(board[sr][sc] == '0') {
                     if(add_cell(head, sr, sc)) {
                         clear_area(sr, sc, view, board, head, size);
+                        view[sr][sc] = '.';
                     }
                 } else {
                     view[sr][sc] = board[sr][sc];
