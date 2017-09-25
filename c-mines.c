@@ -351,10 +351,10 @@ bool add_cell(Cell ** handle, int r, int c) {
     }
 
     // if we get here, the cell wasn't found
-    head = malloc(sizeof(Cell));
-    head->next = NULL;
-    head->r = r;
-    head->c = c;
+    *handle = malloc(sizeof(Cell));
+    (*handle)->next = NULL;
+    (*handle)->r = r;
+    (*handle)->c = c;
 
     return true;
 
@@ -367,7 +367,7 @@ void destroy_cells(Cell ** handle) {
     while(*handle) {
 
         node = *handle;
-        handle = &node->next;
+        handle = &(node->next);
         free(node);
     
     }
