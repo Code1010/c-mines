@@ -153,13 +153,6 @@ void calculate_cells(char ** board, int size) {
     }
 }
 
-/*
- * Controls: 
- * Move cursor: wasd
- * Mark: e
- * Uncover cell: r
- * Quit: q
- */
 int play_game(char ** board, char ** view, int size, int num) {
     
     time_t start = time(NULL);
@@ -177,6 +170,7 @@ int play_game(char ** board, char ** view, int size, int num) {
     
     while(run) {
         
+
         show_board(view, size, r, c);
 
         ch = getch();
@@ -272,6 +266,10 @@ int play_game(char ** board, char ** view, int size, int num) {
 void show_board(char ** view, int size, int cursr, int cursc) {
     
     move(0, 0);
+
+    printw("==================== MINES ====================\n");
+    printw("wasd [move]   e [mark]   r [uncover]   q [quit]\n");
+    printw("===============================================\n\n");
 
     for(int r = 0; r < size; ++r) {
         for(int c = 0; c < size; ++c) {
