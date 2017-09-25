@@ -225,7 +225,7 @@ int play_game(char ** board, char ** view, int size, int num) {
                     view[r][c] = '.';
                     Cell * head = NULL;
                     Cell ** handle = &head;
-                    add_cell(handle, r, c);
+                    clear_area(r, c, view, board, handle, size);
                     destroy_cells(handle);
                     break;
             }
@@ -323,12 +323,13 @@ void clear_area(int r, int c, char ** view, char ** board, Cell ** head, int siz
 
             // make sure they're safe to dereference
             if((sr >= 0 && sc >= 0) && (sr < size) && (sc < size)) {
-                if(board[sr][sc] > '0') {
-                    view[sr][sc] = board[sr][sc];
-                } else {
+
+                if(board[sr][sc] == '0') {
                     if(add_cell(head, sr, sc)) {
                         clear_area(sr, sc, view, board, head, size);
                     }
+                } else {
+                    view[sr][sc] = board[sr][sc];
                 }
             }
         }
@@ -338,7 +339,8 @@ void clear_area(int r, int c, char ** view, char ** board, Cell ** head, int siz
 
 bool add_cell(Cell ** handle, int r, int c) {
     
-    Cell * head = *handle;
+    Cell * head = *handle; // will be changed
+    Cell * front = *handle; // want to keep record of
 
     while(head) {
         
@@ -352,7 +354,7 @@ bool add_cell(Cell ** handle, int r, int c) {
 
     // if we get here, the cell wasn't found
     *handle = malloc(sizeof(Cell));
-    (*handle)->next = NULL;
+    (*handle)->next = front;
     (*handle)->r = r;
     (*handle)->c = c;
 
