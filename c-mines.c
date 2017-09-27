@@ -327,9 +327,9 @@ void show_board(char ** view, int size, int cursr, int cursc) {
     
     move(0, 0);
 
-    printw("==================== MINES ====================\n");
+    printw("+ - - - - - - - - - - MINES - - - - - - - - - - +\n");
     printw("wasd [move]   e [mark]   r [uncover]   q [quit]\n");
-    printw("===============================================\n\n");
+    printw("+ - - - - - - - - - - - - - - - - - - - - - - - +\n\n");
 
     for(int r = 0; r < size; ++r) {
         for(int c = 0; c < size; ++c) {
