@@ -36,3 +36,7 @@ make clean
 #### *Real* Clean
 Torches all files created in the process of compiling, including executables.
 Will leave source files untouched.
+
+```
+make real_clean
+```
