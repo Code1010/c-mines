@@ -11,7 +11,7 @@ Usage: ~$ ./mines len num
 | num       | the number of mines on the board |
 
 ## Compilation with GCC
-I've included a simple makefile. This is basically all it does. 
+I've included a simple makefile. Just go in the directory and type 
 ```
-~$ gcc c-mines.c -lncurses -o mines
+~$ make
 ```
