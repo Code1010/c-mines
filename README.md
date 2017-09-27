@@ -1,8 +1,8 @@
 # c-mines
-A C implementation of a CLI version of Minesweeper. 
+A C implementation of Minesweeper using ncurses. 
 
 ```
-Usage: ~$ ./c-mines len num
+Usage: ~$ ./mines len num
 ```
 
 | Parameter | Meaning |
@@ -11,8 +11,7 @@ Usage: ~$ ./c-mines len num
 | num       | the number of mines on the board |
 
 ## Compilation with GCC
-So I don't forget how to do it 2 months later. I could make a 
-makefile but copy-pasta is way easier.
+I've included a simple makefile. This is basically all it does. 
 ```
-~$ gcc -Wall -Wextra -pedantic -ggdb -std=c99 c-mines.c -lncurses -o mines
+~$ gcc c-mines.c -lncurses -o mines
 ```
