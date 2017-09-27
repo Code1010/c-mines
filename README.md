@@ -11,7 +11,28 @@ Usage: ~$ ./mines len num
 | num       | the number of mines on the board |
 
 ## Compilation with GCC
-I've included a simple makefile. Just go in the directory and type 
+Don't forget to compile with -lncurses, otherwise the linker will split
+in your face.
+
+### Compilation Options
+Make makes life easier.
+#### Vanilla Make
+Just go in the directory and type ```make```
+
+#### A La Mode
+Compiles with extra compiler flags on the side.
+Just go in the directory and type ```make dev```
+
+### Cleanup Options
+Because storage space is so hard to come by these days...
+
+#### Clean
+Removes files created during the compile process, leaves source files, and
+executables untouched.
 ```
-~$ make
+make clean
 ```
+
+#### *Real* Clean
+Torches all files created in the process of compiling, including executables.
+Will leave source files untouched.
